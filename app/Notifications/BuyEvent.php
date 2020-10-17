@@ -7,23 +7,45 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Models\Purchase;
+use Illuminate\Notifications\Messages\NexmoMessage;
 
 class BuyEvent extends Notification
 {
     use Queueable;
 
+    /**
+     * The Purchase object.
+     *
+     * @var App\Models\Purchase
+     */
     private $purchase;
+
+    /**
+     * A fake url for the purchase.
+     *
+     * @var string
+     */
     private $purchaseUrl;
+
+    /**
+     * One of the predefined channel names.
+     *
+     * @var string
+     */
+    private $channel;
 
     /**
      * Create a new notification instance.
      *
+     * @param  Purchase  $purchase
+     * @param  string  $channel
      * @return void
      */
-    public function __construct(Purchase $purchase)
+    public function __construct(Purchase $purchase, $channel)
     {
         $this->purchase = $purchase;
         $this->purchaseUrl = url('/purchases/' . $this->purchase->id);
+        $this->channel = $channel;
     }
 
     /**
@@ -34,7 +56,8 @@ class BuyEvent extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'/*, 'mail', 'nexmo'*/];
+        $channel = ($this->channel == 'sms') ? 'nexmo' : $this->channel;
+        return [$channel];
     }
 
     /**
@@ -47,13 +70,10 @@ class BuyEvent extends Notification
     {
         return (new MailMessage)
             ->subject('Your purchase was successful.')
-            ->line('')
             ->line('Details:')
             ->line('Product title: ' . $this->purchase->product_title)
             ->line('Purchase price: ' . $this->purchase->purchase_price)
-            ->line('')
             ->action('Go to the website', $this->purchaseUrl)
-            ->line('')
             ->line('Thank you!');
     }
 
@@ -80,8 +100,6 @@ class BuyEvent extends Notification
      */
     public function toNexmo($notifiable)
     {
-        return (new NexmoMessage)
-            ->content('Your purchase was successful. Product: ' . $this->purchase->product_title . ', Price: ' . $this->purchase->purchase_price . '. Thank you! (' . $this->purchaseUrl . ')')
-            ->unicode();
+        return (new NexmoMessage)->content('Your purchase was successful. Product: ' . $this->purchase->product_title . ', Price: ' . $this->purchase->purchase_price . '. Thank you! (' . $this->purchaseUrl . ')');
     }
 }
