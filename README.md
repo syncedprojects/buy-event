@@ -39,16 +39,49 @@ Run the database migrations (**Set the database connection in .env before migrat
 
 - `.env` - Environment variables can be set in this file
 
+
+## Notifications
+
+Console Help
+
+    php artisan help purchase-notification:send
+    
+Description:
+    
+    Sends purchase notifications to customers on various channels (database, mail, sms).
+
+Usage:
+  
+    purchase-notification:send [options] [--] <channel>
+
+Arguments:
+  
+    channel                      database, mail, sms
+
+Options:
+    
+    --customer_id[=CUSTOMER_ID]  The ID of customer (for testing default customer is returned if not found instead of error)
+    --phone[=PHONE]              The phone of customer (for testing a customer is generated based on this value)
+    --email[=EMAIL]              The email of customer (for testing a customer is generated based on this value)
+    --purchase_id[=PURCHASE_ID]  The ID of the purchase (purchase gets generated randomly)
+
+### Sample Usage
+
+#### Database notifications
+
+    php artisan purchase-notification:send database --customer_id=777 --purchase_id=1
+
+
 ## Screenshots
 
-Database
+#### Database
 
 ![Screenshot](screenshots/database-notification.png)
 
-Mail
+#### Mail
 
 ![Screenshot](screenshots/mail-notification.png)
 
-SMS (Nexmo)
+#### SMS (Nexmo)
 
 ![Screenshot](screenshots/sms-notification.png)
