@@ -38,3 +38,17 @@ Run the database migrations (**Set the database connection in .env before migrat
 ## Environment variables
 
 - `.env` - Environment variables can be set in this file
+
+## Screenshots
+
+Database
+
+![Screenshot](screenshots/database-notification.png)
+
+Mail
+
+![Screenshot](screenshots/mail-notification.png)
+
+SMS (Nexmo)
+
+![Screenshot](screenshots/sms-notification.png)
