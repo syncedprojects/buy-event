@@ -70,6 +70,22 @@ Options:
 #### Database notifications
 
     php artisan purchase-notification:send database --customer_id=777 --purchase_id=1
+    
+    php artisan purchase-notification:send database --email=synced.projects@gmail.com --purchase_id=33
+    
+    php artisan purchase-notification:send database --email=synced.projects@gmail.com --phone=9989097xxxx6 --purchase_id=89
+
+#### Mail notifications
+
+    php artisan purchase-notification:send mail --customer_id=21 --purchase_id=245
+    
+    php artisan purchase-notification:send mail --email=synced.projects@gmail.com --purchase_id=74
+
+#### SMS notifications
+
+    php artisan purchase-notification:send sms --customer_id=93 --purchase_id=17
+    
+    php artisan purchase-notification:send sms --phone=9989097xxxx6 --purchase_id=56
 
 
 ## Screenshots
